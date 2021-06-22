@@ -1,0 +1,68 @@
+{
+  "name": "docsignapi",
+  "version": "1.0.0",
+  "description": "DocuSign API Application",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@dynatrace/oneagent-sdk": "^1.4.1",
+    "@sap/cds": "^4",
+    "@sap/cds-compiler": "^2.1.6",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.6.2",
+    "@sap/hana-client": "^2.8.20",
+    "@sap/hdbext": "^7.1.1",
+    "@sap/xsenv": "^2.1.0",
+    "@sap/xssec": "^2.2.3",
+    "body-parser": "^1.19.0",
+    "docusign-esign": "^5.9.0",
+    "express": "^4.17.1",
+    "helmet": "^3.23.3",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.0.2"
+  },
+  "scripts": {
+    "start": "cds run",
+    "test": "node index.js",
+    "env": "cp ./default-env.json ./db/default-env.json && cp ./default-env.json ./srv/default-env.json",
+    "build": "cds build/all --clean"
+  },
+  "cds": {
+    "build": {
+      "target": ".",
+      "tasks": [
+        {
+          "src": "db",
+          "for": "hana",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        },
+        {
+          "src": "srv",
+          "for": "node-cf",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        }
+      ]
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    },
+    "requires": {
+      "db": {
+        "kind": "hana"
+      }
+    }
+  },
+  "author": "Kleber Araujo"
+}

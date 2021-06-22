@@ -1,0 +1,7 @@
+---
+buildpack: nodejs_buildpack
+applications:
+- name: docsignapi
+  command: npm start
+  memory: 256M
+  instances: 1
